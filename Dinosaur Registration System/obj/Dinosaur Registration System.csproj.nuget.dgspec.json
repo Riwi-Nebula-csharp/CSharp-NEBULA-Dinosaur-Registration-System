@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\diego\\OneDrive\\Documents\\Riwi\\Code\\Advance Route\\Week 3\\Dinosaur Registration System\\Dinosaur Registration System\\Dinosaur Registration System\\Dinosaur Registration System.csproj": {}
+    "C:\\Users\\diego\\OneDrive\\Documents\\Riwi\\Code\\Advance Route\\Week 3\\Dinosaur Registration System\\CSharp-NEBULA-Dinosaur-Registration-System\\Dinosaur Registration System\\Dinosaur Registration System.csproj": {}
   },
   "projects": {
-    "C:\\Users\\diego\\OneDrive\\Documents\\Riwi\\Code\\Advance Route\\Week 3\\Dinosaur Registration System\\Dinosaur Registration System\\Dinosaur Registration System\\Dinosaur Registration System.csproj": {
+    "C:\\Users\\diego\\OneDrive\\Documents\\Riwi\\Code\\Advance Route\\Week 3\\Dinosaur Registration System\\CSharp-NEBULA-Dinosaur-Registration-System\\Dinosaur Registration System\\Dinosaur Registration System.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\diego\\OneDrive\\Documents\\Riwi\\Code\\Advance Route\\Week 3\\Dinosaur Registration System\\Dinosaur Registration System\\Dinosaur Registration System\\Dinosaur Registration System.csproj",
+        "projectUniqueName": "C:\\Users\\diego\\OneDrive\\Documents\\Riwi\\Code\\Advance Route\\Week 3\\Dinosaur Registration System\\CSharp-NEBULA-Dinosaur-Registration-System\\Dinosaur Registration System\\Dinosaur Registration System.csproj",
         "projectName": "Dinosaur Registration System",
-        "projectPath": "C:\\Users\\diego\\OneDrive\\Documents\\Riwi\\Code\\Advance Route\\Week 3\\Dinosaur Registration System\\Dinosaur Registration System\\Dinosaur Registration System\\Dinosaur Registration System.csproj",
+        "projectPath": "C:\\Users\\diego\\OneDrive\\Documents\\Riwi\\Code\\Advance Route\\Week 3\\Dinosaur Registration System\\CSharp-NEBULA-Dinosaur-Registration-System\\Dinosaur Registration System\\Dinosaur Registration System.csproj",
         "packagesPath": "C:\\Users\\diego\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\diego\\OneDrive\\Documents\\Riwi\\Code\\Advance Route\\Week 3\\Dinosaur Registration System\\Dinosaur Registration System\\Dinosaur Registration System\\obj\\",
+        "outputPath": "C:\\Users\\diego\\OneDrive\\Documents\\Riwi\\Code\\Advance Route\\Week 3\\Dinosaur Registration System\\CSharp-NEBULA-Dinosaur-Registration-System\\Dinosaur Registration System\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\diego\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -43,6 +43,18 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
