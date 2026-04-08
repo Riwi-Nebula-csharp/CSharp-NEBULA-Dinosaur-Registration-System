@@ -3,7 +3,7 @@ using Dinosaur_Registration_System.Models;
 
 namespace Dinosaur_Registration_System.Data;
 
-public class AppDbContex : DbContext
+public class AppDbContext : DbContext
 {
     public DbSet<Dinosaur> Dinosaurs { get; set; }
 
