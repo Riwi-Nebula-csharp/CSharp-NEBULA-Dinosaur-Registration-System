@@ -77,7 +77,7 @@ public class DinosaurService
         Console.WriteLine($"Dinosaur with id: {id} updated successfully");
     }
 
-    public async void updateEmail(int id)
+    public async void UpdateEmail(int id)
     {
         Dinosaur? dinosaur = await _context.Dinosaurs.FirstOrDefaultAsync(x => x.Id == id);
         if (dinosaur == null)
@@ -181,5 +181,63 @@ public class DinosaurService
             Sector: {dino.Sector}");
         }
     }
-    
+
+    public async void DinosWithoutAddress()
+    {
+        var noAddressDinos = await _context.Dinosaurs
+            .Where(x => x.Address == null || x.Address == "")
+            .ToListAsync();
+        
+        Console.WriteLine("All Dinos with no address listed");
+        foreach (var dino in noAddressDinos)
+        {
+            Console.WriteLine($@"
+            ----------DINO----------
+            ID: {dino.Id}
+            First Name: {dino.FirstName}
+            Last Name: {dino.LastName}
+            Email: {dino.Email}
+            Zone: {dino.Zone}
+            Sector: {dino.Sector}");
+        }
+    }
+
+    public async void LastRecorderdDinos()
+    {
+        var lastDinos = await _context.Dinosaurs
+            .OrderByDescending(x => x.CreatedAt)
+            .ToListAsync();
+        
+        Console.WriteLine("All Dinos with no address listed");
+        foreach (var dino in lastDinos)
+        {
+            Console.WriteLine($@"
+            ----------DINO----------
+            ID: {dino.Id}
+            First Name: {dino.FirstName}
+            Last Name: {dino.LastName}
+            Email: {dino.Email}
+            Zone: {dino.Zone}
+            Sector: {dino.Sector}
+            Registered at: {dino.CreatedAt}");
+        }
+    }
+
+    public async void DinosAlphabetically()
+    {
+        var dinosAlph = await _context.Dinosaurs.OrderBy(x => x.Type).ToListAsync();
+        
+        Console.WriteLine("All Dinos with no address listed");
+        foreach (var dino in dinosAlph)
+        {
+            Console.WriteLine($@"
+            ----------DINO----------
+            ID: {dino.Id}
+            First Name: {dino.FirstName}
+            Last Name: {dino.LastName}
+            Email: {dino.Email}
+            Zone: {dino.Zone}
+            Sector: {dino.Sector}");
+        }
+    }
 }
