@@ -2,7 +2,7 @@
 
 namespace Dinosaur_Registration_System.Utils;
 
-public class Validator
+public static class Validator
 {
     // TODO: Crear métodos para validar datos de entrada.
     // TODO: Validar campos obligatorios (no vacíos).
