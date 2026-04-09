@@ -2935,19 +2935,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\diego\\.nuget\\packages\\": {}
+    "/home/csharp/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\diego\\OneDrive\\Documents\\Riwi\\Code\\Advance Route\\Week 3\\Dinosaur Registration System\\CSharp-NEBULA-Dinosaur-Registration-System\\Dinosaur Registration System\\Dinosaur Registration System.csproj",
+      "projectUniqueName": "/home/csharp/Música/JOSE - C#/ActivityTrain/CSharp-NEBULA-Dinosaur-Registration-System/Dinosaur Registration System/Dinosaur Registration System.csproj",
       "projectName": "Dinosaur Registration System",
-      "projectPath": "C:\\Users\\diego\\OneDrive\\Documents\\Riwi\\Code\\Advance Route\\Week 3\\Dinosaur Registration System\\CSharp-NEBULA-Dinosaur-Registration-System\\Dinosaur Registration System\\Dinosaur Registration System.csproj",
-      "packagesPath": "C:\\Users\\diego\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\diego\\OneDrive\\Documents\\Riwi\\Code\\Advance Route\\Week 3\\Dinosaur Registration System\\CSharp-NEBULA-Dinosaur-Registration-System\\Dinosaur Registration System\\obj\\",
+      "projectPath": "/home/csharp/Música/JOSE - C#/ActivityTrain/CSharp-NEBULA-Dinosaur-Registration-System/Dinosaur Registration System/Dinosaur Registration System.csproj",
+      "packagesPath": "/home/csharp/.nuget/packages/",
+      "outputPath": "/home/csharp/Música/JOSE - C#/ActivityTrain/CSharp-NEBULA-Dinosaur-Registration-System/Dinosaur Registration System/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\diego\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/home/csharp/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -3009,30 +3009,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.25, 8.0.25]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[8.0.25, 8.0.25]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.25, 8.0.25]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[8.0.25, 8.0.25]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.312/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/home/csharp/.dotnet/sdk/9.0.312/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -9,6 +9,74 @@ public class Validator
     // TODO: Validar formato de email (opcional).
     // TODO: Validar que la edad sea mayor o igual a 0 y menor a 100.
 
+
+    // Pedir cadena real (no vacia)
+    public static string GetString(string message)
+    {
+        while (true)
+        {
+            Console.WriteLine(message);
+            string text = Console.ReadLine()?.Trim();
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                return text;
+            }
+
+            Console.WriteLine("Cannot be empty");
+        }
+    }
+
+    // Pedir entero positivo
+    public static int GetInt(string message)
+    {
+        while (true)
+        {
+            Console.WriteLine(message);
+            string number = Console.ReadLine();
+            if (int.TryParse(number, out int result))
+            {
+                if (result >= 0)
+                {
+                    return result;
+                }
+                else
+                {
+                    Console.WriteLine("Cannot be negative");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Only whole numbers");
+            }
+        }
+    }
+
+    // Método para la reutilización de los enums (Para no alargar los métodos CRUD)
+    public static T GetEnumFromUser<T>(string mensaje) where T : Enum
+    {
+        while (true)
+        {
+            Console.WriteLine(mensaje);
+
+            var values = Enum.GetValues(typeof(T));
+
+            int i = 1;
+            foreach (var value in values)
+            {
+                Console.WriteLine($"{i}. {value}");
+                i++;
+            }
+
+            int option = GetInt("\nSeleccione una opción: ");
+            if (option >= 1 && option <= values.Length)
+            {
+                return (T)values.GetValue(option - 1);
+            }
+
+            Console.WriteLine("\nOpción incorrecta, intente de nuevo\n");
+        }
+    }
+
     public static int RequestId()
     {
         int id;
@@ -20,7 +88,7 @@ public class Validator
 
         return id;
     }
-    
+
     public static string RequestEmail()
     {
         Console.WriteLine("What's the email?: ");
@@ -47,7 +115,12 @@ public class Validator
             Console.Write("New First Name: ");
             var input = Console.ReadLine();
             if (string.IsNullOrEmpty(input)) break;
-            if (input.Length <= 100) { newData["FirstName"] = input; break; }
+            if (input.Length <= 100)
+            {
+                newData["FirstName"] = input;
+                break;
+            }
+
             Console.WriteLine("  ⚠ 100 characters max.");
         }
 
@@ -57,7 +130,12 @@ public class Validator
             Console.Write("New Last Name: ");
             var input = Console.ReadLine();
             if (string.IsNullOrEmpty(input)) break;
-            if (input.Length <= 100) { newData["LastName"] = input; break; }
+            if (input.Length <= 100)
+            {
+                newData["LastName"] = input;
+                break;
+            }
+
             Console.WriteLine("  ⚠ 100 characters max.");
         }
 
@@ -67,7 +145,12 @@ public class Validator
             Console.Write("New Username: ");
             var input = Console.ReadLine();
             if (string.IsNullOrEmpty(input)) break;
-            if (input.Length <= 50) { newData["Username"] = input; break; }
+            if (input.Length <= 50)
+            {
+                newData["Username"] = input;
+                break;
+            }
+
             Console.WriteLine("  ⚠ 50 characters max, try again.");
         }
 
@@ -77,7 +160,12 @@ public class Validator
             Console.Write("New Age: ");
             var input = Console.ReadLine();
             if (string.IsNullOrEmpty(input)) break;
-            if (int.TryParse(input, out int age) && age >= 0) { newData["Age"] = age; break; }
+            if (int.TryParse(input, out int age) && age >= 0)
+            {
+                newData["Age"] = age;
+                break;
+            }
+
             Console.WriteLine("  ⚠ Put a valid number equal or higher than 0.");
         }
 
@@ -87,7 +175,12 @@ public class Validator
             Console.Write($"New Type ({string.Join(", ", Enum.GetNames(typeof(DinosaurType)))}): ");
             var input = Console.ReadLine();
             if (string.IsNullOrEmpty(input)) break;
-            if (Enum.TryParse(typeof(DinosaurType), input, true, out var type)) { newData["Type"] = type; break; }
+            if (Enum.TryParse(typeof(DinosaurType), input, true, out var type))
+            {
+                newData["Type"] = type;
+                break;
+            }
+
             Console.WriteLine($"  ⚠ Invalid value, options: {string.Join(", ", Enum.GetNames(typeof(DinosaurType)))}");
         }
 
@@ -97,7 +190,12 @@ public class Validator
             Console.Write($"New Zone ({string.Join(", ", Enum.GetNames(typeof(DinosaurZone)))}): ");
             var input = Console.ReadLine();
             if (string.IsNullOrEmpty(input)) break;
-            if (Enum.TryParse(typeof(DinosaurZone), input, true, out var zone)) { newData["Zone"] = zone; break; }
+            if (Enum.TryParse(typeof(DinosaurZone), input, true, out var zone))
+            {
+                newData["Zone"] = zone;
+                break;
+            }
+
             Console.WriteLine($"  ⚠ Invalid Value, options: {string.Join(", ", Enum.GetNames(typeof(DinosaurZone)))}");
         }
 
@@ -107,8 +205,14 @@ public class Validator
             Console.Write($"New Sector ({string.Join(", ", Enum.GetNames(typeof(DinosaurSector)))}): ");
             var input = Console.ReadLine();
             if (string.IsNullOrEmpty(input)) break;
-            if (Enum.TryParse(typeof(DinosaurSector), input, true, out var sector)) { newData["Sector"] = sector; break; }
-            Console.WriteLine($"  ⚠ Invalid Value, options: {string.Join(", ", Enum.GetNames(typeof(DinosaurSector)))}");
+            if (Enum.TryParse(typeof(DinosaurSector), input, true, out var sector))
+            {
+                newData["Sector"] = sector;
+                break;
+            }
+
+            Console.WriteLine(
+                $"  ⚠ Invalid Value, options: {string.Join(", ", Enum.GetNames(typeof(DinosaurSector)))}");
         }
 
         // Address
@@ -117,7 +221,12 @@ public class Validator
             Console.Write("New Address: ");
             var input = Console.ReadLine();
             if (string.IsNullOrEmpty(input)) break;
-            if (input.Length <= 200) { newData["Address"] = input; break; }
+            if (input.Length <= 200)
+            {
+                newData["Address"] = input;
+                break;
+            }
+
             Console.WriteLine("  ⚠ 200 characters max, try again");
         }
 
@@ -127,7 +236,12 @@ public class Validator
             Console.Write("New Phone: ");
             var input = Console.ReadLine();
             if (string.IsNullOrEmpty(input)) break;
-            if (input.Length <= 20) { newData["Phone"] = input; break; }
+            if (input.Length <= 20)
+            {
+                newData["Phone"] = input;
+                break;
+            }
+
             Console.WriteLine("  ⚠ 20 characters max, try again.");
         }
 
