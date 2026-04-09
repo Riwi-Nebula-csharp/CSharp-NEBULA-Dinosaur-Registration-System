@@ -72,9 +72,32 @@ public class DinosaurService
         if (data.TryGetValue("Sector",    out var sector))    dinosaur.Sector    = (DinosaurSector)sector;
         if (data.TryGetValue("Address",   out var address))   dinosaur.Address   = (string)address;
         if (data.TryGetValue("Phone",     out var phone))     dinosaur.Phone     = (string)phone;
-        
-        
-        
 
+        await _context.SaveChangesAsync();
+        Console.WriteLine($"Dinosaur with id: {id} updated successfully");
     }
+
+    public async void updateEmail(int id)
+    {
+        Dinosaur? dinosaur = await _context.Dinosaurs.FirstOrDefaultAsync(x => x.Id == id);
+        if (dinosaur == null)
+        {
+            Console.WriteLine("\nId not found, try again");
+            return;
+        }
+
+        Console.WriteLine("For security reasons, type the curren email of the Dinosaur");
+        string email = Validator.RequestEmail();
+
+        if (dinosaur.Email != email)
+        {
+            Console.WriteLine("Incorrect, access to updated denied");
+            return;
+        }
+
+        dinosaur.Email = email;
+        await _context.SaveChangesAsync();
+        Console.WriteLine("\nEmail updated successfully!");
+    }
+    
 }
