@@ -99,5 +99,87 @@ public class DinosaurService
         await _context.SaveChangesAsync();
         Console.WriteLine("\nEmail updated successfully!");
     }
+
+    public async void FullNamesWithEmail()
+    {
+        var dinosaurs = await _context.Dinosaurs.Select(x => new
+        {
+            x.FirstName,
+            x.LastName,
+            x.Email
+        }).ToListAsync();
+
+        Console.WriteLine("Display a list of full names and registration codes(email), for scientific reports.");
+        foreach (var dino in dinosaurs)
+        {
+            Console.WriteLine($@"
+            ----------DINO----------
+            First Name: {dino.FirstName}
+            Last Name: {dino.LastName}
+            Email: {dino.Email}");
+        }
+    }
+
+    public async void TotalDinosaurs()
+    {
+        var count = await _context.Dinosaurs.CountAsync();
+        Console.WriteLine($"There's {count} Dinosaurs registered");
+    }
+
+    public async void HowManyDinosByZone()
+    {
+        var dinosByZone = await _context.Dinosaurs
+            .GroupBy(x => x.Zone)
+            .Select(u => new
+            {
+                value = u.Key,
+                count = u.Count()
+            }).ToListAsync();
+
+        Console.WriteLine("Count how many dinosaurs there are in each area.");
+        foreach (var zone in dinosByZone)
+        {
+            Console.WriteLine($"Area: {zone.value}");
+            Console.WriteLine($"There are {zone.count} Dinos there");
+        }
+    }
+
+    public async void HowManyDinosBySection()
+    {
+        var dinosBySection = await _context.Dinosaurs
+            .GroupBy(x => x.Sector)
+            .Select(u => new
+            {
+                value = u.Key,
+                count = u.Count()
+            }).ToListAsync();
+
+        Console.WriteLine("Count how many dinosaurs there are in each section.");
+        foreach (var section in dinosBySection)
+        {
+            Console.WriteLine($"Section: {section.value}");
+            Console.WriteLine($"There are {section.count} Dinos there");
+        }
+    }
+
+    public async void DinosWithoutPhone()
+    {
+        var noPhoneDinos = await _context.Dinosaurs
+            .Where(x => x.Phone == null || x.Phone == "")
+            .ToListAsync();
+
+        Console.WriteLine("All Dinos with no phone numbers listed");
+        foreach (var dino in noPhoneDinos)
+        {
+            Console.WriteLine($@"
+            ----------DINO----------
+            ID: {dino.Id}
+            First Name: {dino.FirstName}
+            Last Name: {dino.LastName}
+            Email: {dino.Email}
+            Zone: {dino.Zone}
+            Sector: {dino.Sector}");
+        }
+    }
     
 }
