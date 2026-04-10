@@ -8,12 +8,12 @@ namespace Dinosaur_Registration_System.Services;
 public class DinosaurService
 {
     private readonly AppDbContext _context;
-
+    
     public DinosaurService(AppDbContext context)
     {
         _context = context;
     }
-
+    
     // TODO: Implementar los métodos CRUD (Create, Read, Update, Delete).
     // TODO: Centralizar toda la lógica de acceso a datos.
     // TODO: Implementar consultas usando LINQ (filtros, ordenamientos, conteos).
@@ -81,7 +81,7 @@ public class DinosaurService
     public async void DeleteDinosaur(int id)
     {
         Dinosaur? data = await _context.Dinosaurs.FirstOrDefaultAsync(x => x.Id == id);
-
+        
         if (data == null)
         {
             Console.WriteLine("\nId not found, check the Id and try again");
@@ -92,12 +92,13 @@ public class DinosaurService
         await _context.SaveChangesAsync();
 
         Console.WriteLine("Dinosaur deleted successfully!");
+        
     }
-
+    
     public async void DeleteDinosaur(string email)
     {
         Dinosaur? data = await _context.Dinosaurs.FirstOrDefaultAsync(x => x.Email == email);
-
+        
         if (data == null)
         {
             Console.WriteLine("\nEmail not found, check the Email and try again");
@@ -118,24 +119,24 @@ public class DinosaurService
             Console.WriteLine("\nId not found, try again");
             return;
         }
-
+        
         Dictionary<string, object> data = Validator.RequestData();
-
+        
         if (data.TryGetValue("FirstName", out var firstName)) dinosaur.FirstName = (string)firstName;
-        if (data.TryGetValue("LastName", out var lastName)) dinosaur.LastName = (string)lastName;
-        if (data.TryGetValue("Username", out var username)) dinosaur.Username = (string)username;
-        if (data.TryGetValue("Age", out var age)) dinosaur.Age = (int)age;
-        if (data.TryGetValue("Type", out var type)) dinosaur.Type = (DinosaurType)type;
-        if (data.TryGetValue("Zone", out var zone)) dinosaur.Zone = (DinosaurZone)zone;
-        if (data.TryGetValue("Sector", out var sector)) dinosaur.Sector = (DinosaurSector)sector;
-        if (data.TryGetValue("Address", out var address)) dinosaur.Address = (string)address;
-        if (data.TryGetValue("Phone", out var phone)) dinosaur.Phone = (string)phone;
+        if (data.TryGetValue("LastName",  out var lastName))  dinosaur.LastName  = (string)lastName;
+        if (data.TryGetValue("Username",  out var username))  dinosaur.Username  = (string)username;
+        if (data.TryGetValue("Age",       out var age))       dinosaur.Age       = (int)age;
+        if (data.TryGetValue("Type",      out var type))      dinosaur.Type      = (DinosaurType)type;
+        if (data.TryGetValue("Zone",      out var zone))      dinosaur.Zone      = (DinosaurZone)zone;
+        if (data.TryGetValue("Sector",    out var sector))    dinosaur.Sector    = (DinosaurSector)sector;
+        if (data.TryGetValue("Address",   out var address))   dinosaur.Address   = (string)address;
+        if (data.TryGetValue("Phone",     out var phone))     dinosaur.Phone     = (string)phone;
 
         await _context.SaveChangesAsync();
         Console.WriteLine($"Dinosaur with id: {id} updated successfully");
     }
 
-    public async void updateEmail(int id)
+    public async void UpdateEmail(int id)
     {
         Dinosaur? dinosaur = await _context.Dinosaurs.FirstOrDefaultAsync(x => x.Id == id);
         if (dinosaur == null)
@@ -315,6 +316,65 @@ public class DinosaurService
 
         Console.WriteLine("All Dinos with no phone numbers listed");
         foreach (var dino in noPhoneDinos)
+        {
+            Console.WriteLine($@"
+            ----------DINO----------
+            ID: {dino.Id}
+            First Name: {dino.FirstName}
+            Last Name: {dino.LastName}
+            Email: {dino.Email}
+            Zone: {dino.Zone}
+            Sector: {dino.Sector}");
+        }
+    }
+
+    public async void DinosWithoutAddress()
+    {
+        var noAddressDinos = await _context.Dinosaurs
+            .Where(x => x.Address == null || x.Address == "")
+            .ToListAsync();
+        
+        Console.WriteLine("All Dinos with no address listed");
+        foreach (var dino in noAddressDinos)
+        {
+            Console.WriteLine($@"
+            ----------DINO----------
+            ID: {dino.Id}
+            First Name: {dino.FirstName}
+            Last Name: {dino.LastName}
+            Email: {dino.Email}
+            Zone: {dino.Zone}
+            Sector: {dino.Sector}");
+        }
+    }
+
+    public async void LastRecorderdDinos()
+    {
+        var lastDinos = await _context.Dinosaurs
+            .OrderByDescending(x => x.CreatedAt)
+            .ToListAsync();
+        
+        Console.WriteLine("All Dinos with no address listed");
+        foreach (var dino in lastDinos)
+        {
+            Console.WriteLine($@"
+            ----------DINO----------
+            ID: {dino.Id}
+            First Name: {dino.FirstName}
+            Last Name: {dino.LastName}
+            Email: {dino.Email}
+            Zone: {dino.Zone}
+            Sector: {dino.Sector}
+            Registered at: {dino.CreatedAt}");
+        }
+    }
+
+    public async void DinosAlphabetically()
+    {
+        var dinosAlph = await _context.Dinosaurs.OrderBy(x => x.Type).ToListAsync();
+        
+        Console.WriteLine("All Dinos with no address listed");
+        foreach (var dino in dinosAlph)
         {
             Console.WriteLine($@"
             ----------DINO----------
