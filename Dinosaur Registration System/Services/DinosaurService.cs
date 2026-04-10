@@ -27,7 +27,6 @@ public class DinosaurService
     public async Task<bool> EmailExists(string email)
     {
         return await _context.Dinosaurs.AnyAsync(d => d.Email == email);
-        ;
     }
 
     public async Task RegisterDinosaur()
