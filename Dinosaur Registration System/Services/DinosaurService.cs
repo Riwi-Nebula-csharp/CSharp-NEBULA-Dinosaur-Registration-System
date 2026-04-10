@@ -7,12 +7,7 @@ namespace Dinosaur_Registration_System.Services;
 
 public class DinosaurService
 {
-    private readonly AppDbContext _context;
-    
-    public DinosaurService(AppDbContext context)
-    {
-        _context = context;
-    }
+    private readonly AppDbContext _context = new AppDbContext();
     
     // TODO: Implementar los métodos CRUD (Create, Read, Update, Delete).
     // TODO: Centralizar toda la lógica de acceso a datos.

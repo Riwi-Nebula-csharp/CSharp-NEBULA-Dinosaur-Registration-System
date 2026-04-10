@@ -1,13 +1,7 @@
-﻿using Dinosaur_Registration_System.Models;
-using Dinosaur_Registration_System.Services;
-using Dinosaur_Registration_System.Data;
+﻿using Dinosaur_Registration_System.Services;
 
-// TODO: Crear el menú interactivo en consola (CRUD de dinosaurios).
-// TODO: Solicitar datos al usuario (crear, actualizar, eliminar, consultar).
-// TODO: Llamar a los métodos de DinosaurService para ejecutar la lógica.
-// TODO: Mostrar resultados y mensajes de confirmación en pantalla.
-AppDbContext _context = new AppDbContext();
-DinosaurService dinosaur = new DinosaurService(_context);
+DinosaurService dinosaur = new DinosaurService();
+
 bool salir = false;
 while (!salir)
 {
