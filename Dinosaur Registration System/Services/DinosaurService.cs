@@ -8,12 +8,12 @@ namespace Dinosaur_Registration_System.Services;
 public class DinosaurService
 {
     private readonly AppDbContext _context;
-    
+
     public DinosaurService(AppDbContext context)
     {
         _context = context;
     }
-    
+
     // TODO: Implementar los métodos CRUD (Create, Read, Update, Delete).
     // TODO: Centralizar toda la lógica de acceso a datos.
     // TODO: Implementar consultas usando LINQ (filtros, ordenamientos, conteos).
@@ -24,7 +24,13 @@ public class DinosaurService
         return await _context.Dinosaurs.AnyAsync(d => d.Username == userName);
     }
 
-    public async void RegisterDinosaur()
+    public async Task<bool> EmailExists(string email)
+    {
+        return await _context.Dinosaurs.AnyAsync(d => d.Email == email);
+        ;
+    }
+
+    public async Task RegisterDinosaur()
     {
         string firstName = Validator.GetString("FirstName: ");
         string lastName = Validator.GetString("LastName: ");
@@ -34,29 +40,49 @@ public class DinosaurService
             userName = Validator.GetString("Username: ");
             if (await UserNameExists(userName))
             {
-                throw new Exception("Ese username ya existe");
+                Console.WriteLine("Ese username ya existe, intenta otro.");
             }
-            else
-            {
-                break;
-            }
+            else break;
         }
+
         int age = Validator.GetInt("Age: ");
         DinosaurType type = Validator.GetEnumFromUser<DinosaurType>("Category of dinosaur");
         DinosaurZone zone = Validator.GetEnumFromUser<DinosaurZone>("Zone of dinosaur");
         DinosaurSector sector = Validator.GetEnumFromUser<DinosaurSector>("Sector of dinosaur");
-        string adrress = Validator.GetString("Adrress: ");
+        string address = Validator.GetString("Address: ");
         string phone = Validator.GetString("Phone: ");
-        
+        string email;
+        while (true)
+        {
+            email = Validator.RequestEmail();
+            if (await EmailExists(email))
+            {
+                Console.WriteLine("Ese correo ya existe, intenta otro");
+            }
+            else break;
+        }
 
-
-        _context.SaveChangesAsync();
+        await _context.AddAsync(new Dinosaur
+        {
+            FirstName = firstName,
+            LastName = lastName,
+            Username = userName,
+            Age = age,
+            Type = type,
+            Zone = zone,
+            Sector = sector,
+            Address = address,
+            Phone = phone,
+            Email = email
+        });
+        await _context.SaveChangesAsync();
+        Console.WriteLine("Dinosaurio registrado correctamente");
     }
 
     public async void DeleteDinosaur(int id)
     {
         Dinosaur? data = await _context.Dinosaurs.FirstOrDefaultAsync(x => x.Id == id);
-        
+
         if (data == null)
         {
             Console.WriteLine("\nId not found, check the Id and try again");
@@ -67,13 +93,12 @@ public class DinosaurService
         await _context.SaveChangesAsync();
 
         Console.WriteLine("Dinosaur deleted successfully!");
-        
     }
-    
+
     public async void DeleteDinosaur(string email)
     {
         Dinosaur? data = await _context.Dinosaurs.FirstOrDefaultAsync(x => x.Email == email);
-        
+
         if (data == null)
         {
             Console.WriteLine("\nEmail not found, check the Email and try again");
@@ -94,18 +119,18 @@ public class DinosaurService
             Console.WriteLine("\nId not found, try again");
             return;
         }
-        
+
         Dictionary<string, object> data = Validator.RequestData();
-        
+
         if (data.TryGetValue("FirstName", out var firstName)) dinosaur.FirstName = (string)firstName;
-        if (data.TryGetValue("LastName",  out var lastName))  dinosaur.LastName  = (string)lastName;
-        if (data.TryGetValue("Username",  out var username))  dinosaur.Username  = (string)username;
-        if (data.TryGetValue("Age",       out var age))       dinosaur.Age       = (int)age;
-        if (data.TryGetValue("Type",      out var type))      dinosaur.Type      = (DinosaurType)type;
-        if (data.TryGetValue("Zone",      out var zone))      dinosaur.Zone      = (DinosaurZone)zone;
-        if (data.TryGetValue("Sector",    out var sector))    dinosaur.Sector    = (DinosaurSector)sector;
-        if (data.TryGetValue("Address",   out var address))   dinosaur.Address   = (string)address;
-        if (data.TryGetValue("Phone",     out var phone))     dinosaur.Phone     = (string)phone;
+        if (data.TryGetValue("LastName", out var lastName)) dinosaur.LastName = (string)lastName;
+        if (data.TryGetValue("Username", out var username)) dinosaur.Username = (string)username;
+        if (data.TryGetValue("Age", out var age)) dinosaur.Age = (int)age;
+        if (data.TryGetValue("Type", out var type)) dinosaur.Type = (DinosaurType)type;
+        if (data.TryGetValue("Zone", out var zone)) dinosaur.Zone = (DinosaurZone)zone;
+        if (data.TryGetValue("Sector", out var sector)) dinosaur.Sector = (DinosaurSector)sector;
+        if (data.TryGetValue("Address", out var address)) dinosaur.Address = (string)address;
+        if (data.TryGetValue("Phone", out var phone)) dinosaur.Phone = (string)phone;
 
         await _context.SaveChangesAsync();
         Console.WriteLine($"Dinosaur with id: {id} updated successfully");
@@ -132,6 +157,93 @@ public class DinosaurService
         dinosaur.Email = email;
         await _context.SaveChangesAsync();
         Console.WriteLine("\nEmail updated successfully!");
+    }
+
+    // Listar todos los dinosaurios registrados (reporte general).
+    public async void AllDinosaurs()
+    {
+        var dinosaurs = await _context.Dinosaurs.ToListAsync();
+        Console.WriteLine(
+            "{0,-10} | {1,-10} | {2,-10} | {3,-10} | {4,-10} | {5,-10} | {6,-10} | {7,-10} | {8,-10} | {9,-10} | {10,-10}, Id, FirstName, LastName, Username, Email, Age, Type,Zone, Sector, Address, Phone");
+        Console.WriteLine(new string('-', 200));
+        foreach (var dino in dinosaurs)
+        {
+            Console.WriteLine(
+                $"{dino.Id,-10} | {dino.FirstName,-10} | {dino.LastName,-10} | {dino.Username,-10} | {dino.Email,-10} | {dino.Type,-10} | {dino.Zone,-10} | {dino.Sector,-10} | {dino.Address,-10} | {dino.Phone,-10}");
+        }
+    }
+
+    // Ver el detalle de un dinosaurio por su Id (consulta individual)
+    public async void GetDinosaurById(int id)
+    {
+        id = Validator.GetInt("Ingrese el id del dinosario a buscar: ");
+        var dino = await _context.Dinosaurs.FirstOrDefaultAsync(d => d.Id == id);
+        Console.WriteLine($"El dinosaurio identidicado con el id: {dino.Id} es: ");
+        Console.WriteLine(
+            "{0,-10} | {1,-10} | {2,-10} | {3,-10} | {4,-10} | {5,-10} | {6,-10} | {7,-10} | {8,-10} | {9,-10} | {10,-10}, Id, FirstName, LastName, Username, Email, Age, Type,Zone, Sector, Address, Phone");
+        Console.WriteLine(new string('-', 200));
+        Console.WriteLine(
+            $"{dino.Id,-10} | {dino.FirstName,-10} | {dino.LastName,-10} | {dino.Username,-10} | {dino.Email,-10} | {dino.Type,-10} | {dino.Zone,-10} | {dino.Sector,-10} | {dino.Address,-10} | {dino.Phone,-10}");
+    }
+
+    // Ver el detalle de un dinosaurio por su código de registro (email).
+    public async void GetDinosaurByEmail(string email)
+    {
+        email = Validator.GetString("Ingrese el id del dinosario a buscar: ");
+        var dino = await _context.Dinosaurs.FirstOrDefaultAsync(d => d.Email == email);
+        Console.WriteLine($"El dinosaurio identidicado con el id: {dino.Id} es: ");
+        Console.WriteLine(
+            "{0,-10} | {1,-10} | {2,-10} | {3,-10} | {4,-10} | {5,-10} | {6,-10} | {7,-10} | {8,-10} | {9,-10} | {10,-10}, Id, FirstName, LastName, Username, Email, Age, Type,Zone, Sector, Address, Phone");
+        Console.WriteLine(new string('-', 200));
+        Console.WriteLine(
+            $"{dino.Id,-10} | {dino.FirstName,-10} | {dino.LastName,-10} | {dino.Username,-10} | {dino.Email,-10} | {dino.Type,-10} | {dino.Zone,-10} | {dino.Sector,-10} | {dino.Address,-10} | {dino.Phone,-10}");
+    }
+
+    public Task<List<Dinosaur>> ListDinosuars(string busqueda = null)
+    {
+        var query = _context.Dinosaurs.AsQueryable();
+
+        // Si la búsqueda es nula o "todos", devolvemos todo Jajaja
+        if (string.IsNullOrWhiteSpace(busqueda) || busqueda?.ToLower() == "todos")
+        {
+            return _context.Dinosaurs.ToListAsync();
+        }
+
+        bool enumType = Enum.TryParse(busqueda, true, out DinosaurType typeEnum);
+        bool enumZone = Enum.TryParse(busqueda, true, out DinosaurZone zoneEnum);
+        bool enumSector = Enum.TryParse(busqueda, true, out DinosaurSector sectorEnum);
+        bool isNumber = int.TryParse(busqueda, out int number);
+        string term = busqueda.ToLower();
+        query = query.Where(d =>
+            (isNumber && (d.Id == number || d.Age == number)) ||
+            d.FirstName.ToLower().Contains(term) ||
+            d.LastName.ToLower().Contains(term) ||
+            d.Username.ToLower().Contains(term) ||
+            d.Email.ToLower().Contains(term) ||
+            (enumType && d.Type == typeEnum) ||
+            (enumZone && d.Zone == zoneEnum) ||
+            (enumSector && d.Sector == sectorEnum)
+        );
+        return query.ToListAsync();
+    }
+
+    public void ViewList(List<Dinosaur> list)
+    {
+        if (list.Count > 0)
+        {
+            Console.WriteLine(
+                "{0,-10} | {1,-10} | {2,-10} | {3,-10} | {4,-15} | {5,-10} | {6,-10} | {7,-10} | {8,-10} | {9,-20} | {10,-15}", "Id", "FirstName", "LastName", "Username", "Email", "Age", "Type", "Zone", "Sector", "Address", "Phone");
+            Console.WriteLine(new string('-', 120));
+            foreach (var dino in list)
+            {
+                Console.WriteLine(
+                    $"{dino.Id,-10} | {dino.FirstName,-10} | {dino.LastName,-10} | {dino.Username,-10} | {dino.Email,-15} | {dino.Type,-10} | {dino.Zone,-10} | {dino.Sector,-10} | {dino.Address,-20} | {dino.Phone,-15}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("No se encontró nada");
+        }
     }
 
     public async void FullNamesWithEmail()
@@ -215,5 +327,4 @@ public class DinosaurService
             Sector: {dino.Sector}");
         }
     }
-    
 }

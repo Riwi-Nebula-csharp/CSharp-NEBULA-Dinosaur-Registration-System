@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Dinosaur Registration System")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c7898dded335f8947af4936c817d0792bcc37fc4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d1a40edec3de819bda337de87982ebf382932504")]
 [assembly: System.Reflection.AssemblyProductAttribute("Dinosaur Registration System")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Dinosaur Registration System")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
