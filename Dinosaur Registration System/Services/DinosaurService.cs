@@ -72,9 +72,12 @@ public class DinosaurService
         await _context.SaveChangesAsync();
         Console.WriteLine("Dinosaurio registrado correctamente");
     }
-
+    
+    
     public async void DeleteDinosaur(int id)
     {
+        
+        
         Dinosaur? data = await _context.Dinosaurs.FirstOrDefaultAsync(x => x.Id == id);
         
         if (data == null)
