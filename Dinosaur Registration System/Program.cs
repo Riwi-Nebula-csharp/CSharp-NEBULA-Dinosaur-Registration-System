@@ -42,12 +42,14 @@ Seleccione una opción: ");
             int menu;
             do
             {
+                Console.Clear();
                 await dinosaur.RegisterDinosaur();
                 menu = Validator.GetInt(@"¿Desea agregar otro dinosuario? 
 1. Si
 2. No");
                 if (menu < 1 || menu > 2)
                 {
+                    Console.Clear();
                     Console.WriteLine("Opción invalida, debe ser 1 o 2");
                 }
             } while (menu == 1);
@@ -55,7 +57,7 @@ Seleccione una opción: ");
             Console.Clear();
             break;
         case 2:
-
+            Console.Clear();
             int consulta = ValidarEntrada(10, @"--- CONSULTAS DE DINOSAURIOS ---
 
 1. Listar todos los dinosaurios
@@ -66,8 +68,7 @@ Seleccione una opción: ");
 6. Listar por edad mínima
 7. Listar por tipo (Carnívoro/Herbívoro)
 8. Mostrar nombres completos + código
-9. Contar total de dinosaurios
-10. Volver
+9. Volver
 
 Seleccione una opción: ");
 
@@ -134,27 +135,98 @@ Seleccione una opción: ");
                     dinosaur.ViewList(typeDinosaurs);
                     break;
                 case 8:
-                    Console.WriteLine("8. Mostrar nombres completos + código");
+                    Console.Clear();
+                    dinosaur.FullNamesWithEmail();
                     break;
                 case 9:
-                    Console.WriteLine("9. Contar total de dinosaurios");
-                    break;
-                case 10:
                     Console.Clear();
                     break;
                 default:
-                    Console.WriteLine("Opción inválida.");
+                    Console.Clear();
+                    Console.WriteLine("Opción inválida.\n");
                     break;
             }
 
             break;
         case 3:
+            Console.Clear();
             int idUpdate = Validator.GetInt("Ingrese el id del dinosaurio: ");
             dinosaur.UpdateDinosaur(idUpdate);
             break;
         case 4:
+            Console.Clear();
             int idDelete = Validator.GetInt("Ingrese el id del dinosaurio a eliminar: ");
-            dinosaur.DeleteDinosaur(idDelete);
+            while (true)
+            {
+                int validarDelete = Validator.GetInt(@"¿Estás seguro de que desea eliminar?
+1. Si
+2. No");
+                if (idDelete < 1 || validarDelete > 2)
+                {
+                    Console.WriteLine("\nOpción invalida, Elija entre 1 y 2\n");
+                }
+
+                if (validarDelete == 1)
+                {
+                    dinosaur.DeleteDinosaur(idDelete);
+                    break;
+                }
+                else if (validarDelete == 2)
+                {
+                    Console.Clear();
+                    Console.WriteLine("\nEl dinosaur se ha conservado\n");
+                    break;
+                }
+            }
+
+            break;
+        case 5:
+            Console.Clear();
+            int reportes = ValidarEntrada(8, @"--- REPORTES AVANZADOS ---
+1. Cantidad de dinosaurios
+2. Cantidad de dinosaurios por zona
+3. Cantidad de dinosaurios por sector
+4. Dinosaurios sin dispositivo de rastreo
+5. Dinosaurios sin ubicación registrada
+6. Últimos dinosaurios registrados
+7. Dinosaurios ordenados por especie (A-Z)
+8. Volver
+
+Seleccione una opción:");
+            switch (reportes)
+            {
+                case 1:
+                    Console.Clear();
+                    dinosaur.TotalDinosaurs();
+                    break;
+                case 2:
+                    Console.Clear();
+                    dinosaur.HowManyDinosByZone();
+                    break;
+                case 3:
+                    Console.Clear();
+                    dinosaur.HowManyDinosBySection();
+                    break;
+                case 4:
+                    Console.Clear();
+                    dinosaur.DinosWithoutPhone();
+                    break;
+                case 5:
+                    Console.Clear();
+                    dinosaur.DinosWithoutAddress();
+                    break;
+                case 6:
+                    Console.Clear();
+                    dinosaur.LastRecorderdDinos();
+                    break;
+                case 7:
+                    Console.Clear();
+                    dinosaur.DinosAlphabetically();
+                    break;
+                case 8:
+                    Console.Clear();
+                    break;
+            }
             break;
         case 6:
             salir = true;

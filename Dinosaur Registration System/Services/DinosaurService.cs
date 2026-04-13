@@ -74,9 +74,9 @@ public class DinosaurService
     }
 
 
-    public async void DeleteDinosaur(int id)
+    public void DeleteDinosaur(int id)
     {
-        Dinosaur? data = await _context.Dinosaurs.FirstOrDefaultAsync(x => x.Id == id);
+        Dinosaur? data = _context.Dinosaurs.FirstOrDefault(x => x.Id == id);
 
         if (data == null)
         {
@@ -85,7 +85,7 @@ public class DinosaurService
         }
 
         _context.Dinosaurs.Remove(data);
-        await _context.SaveChangesAsync();
+        _context.SaveChanges();
 
         Console.WriteLine("Dinosaur deleted successfully!");
     }
@@ -106,9 +106,9 @@ public class DinosaurService
         Console.WriteLine("Dinosaur deleted successfully!");
     }
 
-    public async void UpdateDinosaur(int id)
+    public void UpdateDinosaur(int id)
     {
-        Dinosaur? dinosaur = await _context.Dinosaurs.FirstOrDefaultAsync(x => x.Id == id);
+        Dinosaur? dinosaur = _context.Dinosaurs.FirstOrDefault(x => x.Id == id);
         if (dinosaur == null)
         {
             Console.WriteLine("\nId not found, try again");
@@ -127,7 +127,7 @@ public class DinosaurService
         if (data.TryGetValue("Address", out var address)) dinosaur.Address = (string)address;
         if (data.TryGetValue("Phone", out var phone)) dinosaur.Phone = (string)phone;
 
-        await _context.SaveChangesAsync();
+        _context.SaveChanges();
         Console.WriteLine($"Dinosaur with id: {id} updated successfully");
     }
 
@@ -287,6 +287,7 @@ public class DinosaurService
             .ToListAsync();
     }
 
+    // Método para imprimir a sus similares que retornan una lista
     public void ViewList(List<Dinosaur> list)
     {
         if (list.Count > 0)
@@ -310,14 +311,14 @@ public class DinosaurService
         }
     }
 
-    public async void FullNamesWithEmail()
+    public void FullNamesWithEmail()
     {
-        var dinosaurs = await _context.Dinosaurs.Select(x => new
+        var dinosaurs = _context.Dinosaurs.Select(x => new
         {
             x.FirstName,
             x.LastName,
             x.Email
-        }).ToListAsync();
+        }).ToList();
 
         Console.WriteLine("Display a list of full names and registration codes(email), for scientific reports.");
         foreach (var dino in dinosaurs)
@@ -330,39 +331,39 @@ public class DinosaurService
         }
     }
 
-    public async void TotalDinosaurs()
+    public void TotalDinosaurs()
     {
-        var count = await _context.Dinosaurs.CountAsync();
-        Console.WriteLine($"There's {count} Dinosaurs registered");
+        var count = _context.Dinosaurs.Count();
+        Console.WriteLine($"\nThere's {count} Dinosaurs registered\n");
     }
 
-    public async void HowManyDinosByZone()
+    public void HowManyDinosByZone()
     {
-        var dinosByZone = await _context.Dinosaurs
+        var dinosByZone = _context.Dinosaurs
             .GroupBy(x => x.Zone)
             .Select(u => new
             {
                 value = u.Key,
                 count = u.Count()
-            }).ToListAsync();
+            }).ToList();
 
-        Console.WriteLine("Count how many dinosaurs there are in each area.");
+        Console.WriteLine("\nCount how many dinosaurs there are in each area.\n");
         foreach (var zone in dinosByZone)
         {
             Console.WriteLine($"Area: {zone.value}");
-            Console.WriteLine($"There are {zone.count} Dinos there");
+            Console.WriteLine($"There are {zone.count} Dinos there\n");
         }
     }
 
-    public async void HowManyDinosBySection()
+    public void HowManyDinosBySection()
     {
-        var dinosBySection = await _context.Dinosaurs
+        var dinosBySection = _context.Dinosaurs
             .GroupBy(x => x.Sector)
             .Select(u => new
             {
                 value = u.Key,
                 count = u.Count()
-            }).ToListAsync();
+            }).ToList();
 
         Console.WriteLine("Count how many dinosaurs there are in each section.");
         foreach (var section in dinosBySection)
@@ -372,11 +373,11 @@ public class DinosaurService
         }
     }
 
-    public async void DinosWithoutPhone()
+    public void DinosWithoutPhone()
     {
-        var noPhoneDinos = await _context.Dinosaurs
+        var noPhoneDinos = _context.Dinosaurs
             .Where(x => x.Phone == null || x.Phone == "")
-            .ToListAsync();
+            .ToList();
 
         Console.WriteLine("All Dinos with no phone numbers listed");
         foreach (var dino in noPhoneDinos)
@@ -392,11 +393,11 @@ public class DinosaurService
         }
     }
 
-    public async void DinosWithoutAddress()
+    public void DinosWithoutAddress()
     {
-        var noAddressDinos = await _context.Dinosaurs
+        var noAddressDinos = _context.Dinosaurs
             .Where(x => x.Address == null || x.Address == "")
-            .ToListAsync();
+            .ToList();
 
         Console.WriteLine("All Dinos with no address listed");
         foreach (var dino in noAddressDinos)
@@ -412,11 +413,11 @@ public class DinosaurService
         }
     }
 
-    public async void LastRecorderdDinos()
+    public void LastRecorderdDinos()
     {
-        var lastDinos = await _context.Dinosaurs
+        var lastDinos = _context.Dinosaurs
             .OrderByDescending(x => x.CreatedAt)
-            .ToListAsync();
+            .ToList();
 
         Console.WriteLine("All Dinos with no address listed");
         foreach (var dino in lastDinos)
@@ -433,9 +434,9 @@ public class DinosaurService
         }
     }
 
-    public async void DinosAlphabetically()
+    public void DinosAlphabetically()
     {
-        var dinosAlph = await _context.Dinosaurs.OrderBy(x => x.Type).ToListAsync();
+        var dinosAlph = _context.Dinosaurs.OrderBy(x => x.Type).ToList();
 
         Console.WriteLine("All Dinos with no address listed");
         foreach (var dino in dinosAlph)
@@ -446,8 +447,10 @@ public class DinosaurService
             First Name: {dino.FirstName}
             Last Name: {dino.LastName}
             Email: {dino.Email}
+            Type: {dino.Type}
             Zone: {dino.Zone}
             Sector: {dino.Sector}");
         }
+        Console.WriteLine();
     }
 }

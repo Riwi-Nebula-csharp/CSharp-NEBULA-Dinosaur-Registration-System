@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\JOSE\\RIWI\\Csharp\\CSharp-NEBULA-Dinosaur-Registration-System\\Dinosaur Registration System\\Dinosaur Registration System.csproj": {}
+    "/home/csharp/Música/JOSE - C#/ActivityTrain/CSharp-NEBULA-Dinosaur-Registration-System/Dinosaur Registration System/Dinosaur Registration System.csproj": {}
   },
   "projects": {
-    "D:\\JOSE\\RIWI\\Csharp\\CSharp-NEBULA-Dinosaur-Registration-System\\Dinosaur Registration System\\Dinosaur Registration System.csproj": {
+    "/home/csharp/Música/JOSE - C#/ActivityTrain/CSharp-NEBULA-Dinosaur-Registration-System/Dinosaur Registration System/Dinosaur Registration System.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\JOSE\\RIWI\\Csharp\\CSharp-NEBULA-Dinosaur-Registration-System\\Dinosaur Registration System\\Dinosaur Registration System.csproj",
+        "projectUniqueName": "/home/csharp/Música/JOSE - C#/ActivityTrain/CSharp-NEBULA-Dinosaur-Registration-System/Dinosaur Registration System/Dinosaur Registration System.csproj",
         "projectName": "Dinosaur Registration System",
-        "projectPath": "D:\\JOSE\\RIWI\\Csharp\\CSharp-NEBULA-Dinosaur-Registration-System\\Dinosaur Registration System\\Dinosaur Registration System.csproj",
-        "packagesPath": "C:\\Users\\ruizd\\.nuget\\packages\\",
-        "outputPath": "D:\\JOSE\\RIWI\\Csharp\\CSharp-NEBULA-Dinosaur-Registration-System\\Dinosaur Registration System\\obj\\",
+        "projectPath": "/home/csharp/Música/JOSE - C#/ActivityTrain/CSharp-NEBULA-Dinosaur-Registration-System/Dinosaur Registration System/Dinosaur Registration System.csproj",
+        "packagesPath": "/home/csharp/.nuget/packages/",
+        "outputPath": "/home/csharp/Música/JOSE - C#/ActivityTrain/CSharp-NEBULA-Dinosaur-Registration-System/Dinosaur Registration System/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ruizd\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/csharp/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -81,7 +81,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.312/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/home/csharp/.dotnet/sdk/9.0.312/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
