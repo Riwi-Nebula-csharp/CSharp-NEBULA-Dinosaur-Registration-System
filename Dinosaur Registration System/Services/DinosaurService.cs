@@ -8,7 +8,7 @@ namespace Dinosaur_Registration_System.Services;
 public class DinosaurService
 {
     private readonly AppDbContext _context = new AppDbContext();
-    
+
     // TODO: Implementar los métodos CRUD (Create, Read, Update, Delete).
     // TODO: Centralizar toda la lógica de acceso a datos.
     // TODO: Implementar consultas usando LINQ (filtros, ordenamientos, conteos).
@@ -72,14 +72,12 @@ public class DinosaurService
         await _context.SaveChangesAsync();
         Console.WriteLine("Dinosaurio registrado correctamente");
     }
-    
-    
+
+
     public async void DeleteDinosaur(int id)
     {
-        
-        
         Dinosaur? data = await _context.Dinosaurs.FirstOrDefaultAsync(x => x.Id == id);
-        
+
         if (data == null)
         {
             Console.WriteLine("\nId not found, check the Id and try again");
@@ -90,13 +88,12 @@ public class DinosaurService
         await _context.SaveChangesAsync();
 
         Console.WriteLine("Dinosaur deleted successfully!");
-        
     }
-    
+
     public async void DeleteDinosaur(string email)
     {
         Dinosaur? data = await _context.Dinosaurs.FirstOrDefaultAsync(x => x.Email == email);
-        
+
         if (data == null)
         {
             Console.WriteLine("\nEmail not found, check the Email and try again");
@@ -117,18 +114,18 @@ public class DinosaurService
             Console.WriteLine("\nId not found, try again");
             return;
         }
-        
+
         Dictionary<string, object> data = Validator.RequestData();
-        
+
         if (data.TryGetValue("FirstName", out var firstName)) dinosaur.FirstName = (string)firstName;
-        if (data.TryGetValue("LastName",  out var lastName))  dinosaur.LastName  = (string)lastName;
-        if (data.TryGetValue("Username",  out var username))  dinosaur.Username  = (string)username;
-        if (data.TryGetValue("Age",       out var age))       dinosaur.Age       = (int)age;
-        if (data.TryGetValue("Type",      out var type))      dinosaur.Type      = (DinosaurType)type;
-        if (data.TryGetValue("Zone",      out var zone))      dinosaur.Zone      = (DinosaurZone)zone;
-        if (data.TryGetValue("Sector",    out var sector))    dinosaur.Sector    = (DinosaurSector)sector;
-        if (data.TryGetValue("Address",   out var address))   dinosaur.Address   = (string)address;
-        if (data.TryGetValue("Phone",     out var phone))     dinosaur.Phone     = (string)phone;
+        if (data.TryGetValue("LastName", out var lastName)) dinosaur.LastName = (string)lastName;
+        if (data.TryGetValue("Username", out var username)) dinosaur.Username = (string)username;
+        if (data.TryGetValue("Age", out var age)) dinosaur.Age = (int)age;
+        if (data.TryGetValue("Type", out var type)) dinosaur.Type = (DinosaurType)type;
+        if (data.TryGetValue("Zone", out var zone)) dinosaur.Zone = (DinosaurZone)zone;
+        if (data.TryGetValue("Sector", out var sector)) dinosaur.Sector = (DinosaurSector)sector;
+        if (data.TryGetValue("Address", out var address)) dinosaur.Address = (string)address;
+        if (data.TryGetValue("Phone", out var phone)) dinosaur.Phone = (string)phone;
 
         await _context.SaveChangesAsync();
         Console.WriteLine($"Dinosaur with id: {id} updated successfully");
@@ -158,45 +155,82 @@ public class DinosaurService
     }
 
     // Listar todos los dinosaurios registrados (reporte general).
-    public async void AllDinosaurs()
+    public void AllDinosaurs()
     {
-        var dinosaurs = await _context.Dinosaurs.ToListAsync();
+        var dinosaurs = _context.Dinosaurs.ToList();
+        Console.WriteLine(new string('-', 192));
         Console.WriteLine(
-            "{0,-10} | {1,-10} | {2,-10} | {3,-10} | {4,-10} | {5,-10} | {6,-10} | {7,-10} | {8,-10} | {9,-10} | {10,-10}, Id, FirstName, LastName, Username, Email, Age, Type,Zone, Sector, Address, Phone");
-        Console.WriteLine(new string('-', 200));
+            "{0,-5} | {1,-15} | {2,-15} | {3,-15} | {4,-20} | {5,-5} | {6,-15} | {7,-20} | {8,-20} | {9,-20} | {10,-15}",
+            "Id", "FirstName", "LastName", "Username", "Email", "Age", "Type", "Zone", "Sector", "Address", "Phone");
+        Console.WriteLine(new string('-', 192));
         foreach (var dino in dinosaurs)
         {
             Console.WriteLine(
-                $"{dino.Id,-10} | {dino.FirstName,-10} | {dino.LastName,-10} | {dino.Username,-10} | {dino.Email,-10} | {dino.Type,-10} | {dino.Zone,-10} | {dino.Sector,-10} | {dino.Address,-10} | {dino.Phone,-10}");
+                $"{dino.Id,-5} | {dino.FirstName,-15} | {dino.LastName,-15} | {dino.Username,-15} | {dino.Email,-20} | {dino.Age,-5} | {dino.Type,-15} | {dino.Zone,-20} | {dino.Sector,-20} | {dino.Address,-20} | {dino.Phone,-15}");
         }
+
+        Console.WriteLine(new string('-', 192));
     }
 
     // Ver el detalle de un dinosaurio por su Id (consulta individual)
-    public async void GetDinosaurById(int id)
+    public void GetDinosaurById()
     {
-        id = Validator.GetInt("Ingrese el id del dinosario a buscar: ");
-        var dino = await _context.Dinosaurs.FirstOrDefaultAsync(d => d.Id == id);
-        Console.WriteLine($"El dinosaurio identidicado con el id: {dino.Id} es: ");
-        Console.WriteLine(
-            "{0,-10} | {1,-10} | {2,-10} | {3,-10} | {4,-10} | {5,-10} | {6,-10} | {7,-10} | {8,-10} | {9,-10} | {10,-10}, Id, FirstName, LastName, Username, Email, Age, Type,Zone, Sector, Address, Phone");
-        Console.WriteLine(new string('-', 200));
-        Console.WriteLine(
-            $"{dino.Id,-10} | {dino.FirstName,-10} | {dino.LastName,-10} | {dino.Username,-10} | {dino.Email,-10} | {dino.Type,-10} | {dino.Zone,-10} | {dino.Sector,-10} | {dino.Address,-10} | {dino.Phone,-10}");
+        while (true)
+        {
+            int id = Validator.GetInt("Ingrese el ID a buscar: ");
+            var dino = _context.Dinosaurs.FirstOrDefault(d => d.Id == id);
+            if (dino != null)
+            {
+                Console.WriteLine($"El dinosaurio identidicado con el id: {dino.Id} es: \n");
+                Console.WriteLine(new string('-', 192));
+                Console.WriteLine(
+                    "{0,-5} | {1,-15} | {2,-15} | {3,-15} | {4,-20} | {5,-5} | {6,-15} | {7,-20} | {8,-20} | {9,-20} | {10,-15}",
+                    "Id", "FirstName", "LastName", "Username", "Email", "Age", "Type", "Zone", "Sector", "Address",
+                    "Phone");
+                Console.WriteLine(new string('-', 192));
+                Console.WriteLine(
+                    $"{dino.Id,-5} | {dino.FirstName,-15} | {dino.LastName,-15} | {dino.Username,-15} | {dino.Email,-20} | {dino.Age,-5} | {dino.Type,-15} | {dino.Zone,-20} | {dino.Sector,-20} | {dino.Address,-20} | {dino.Phone,-15}");
+                Console.WriteLine(new string('-', 192));
+                Console.WriteLine();
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Ese ID no está registrado en el sistema");
+            }
+        }
     }
 
     // Ver el detalle de un dinosaurio por su código de registro (email).
-    public async void GetDinosaurByEmail(string email)
+    public void GetDinosaurByEmail()
     {
-        email = Validator.GetString("Ingrese el id del dinosario a buscar: ");
-        var dino = await _context.Dinosaurs.FirstOrDefaultAsync(d => d.Email == email);
-        Console.WriteLine($"El dinosaurio identidicado con el id: {dino.Id} es: ");
-        Console.WriteLine(
-            "{0,-10} | {1,-10} | {2,-10} | {3,-10} | {4,-10} | {5,-10} | {6,-10} | {7,-10} | {8,-10} | {9,-10} | {10,-10}, Id, FirstName, LastName, Username, Email, Age, Type,Zone, Sector, Address, Phone");
-        Console.WriteLine(new string('-', 200));
-        Console.WriteLine(
-            $"{dino.Id,-10} | {dino.FirstName,-10} | {dino.LastName,-10} | {dino.Username,-10} | {dino.Email,-10} | {dino.Type,-10} | {dino.Zone,-10} | {dino.Sector,-10} | {dino.Address,-10} | {dino.Phone,-10}");
+        while (true)
+        {
+            string email = Validator.GetString("Ingrese el email a buscar: ");
+            var dino = _context.Dinosaurs.FirstOrDefault(d => d.Email == email);
+            if (dino != null)
+            {
+                Console.WriteLine($"El dinosaurio identidicado con el email: {dino.Email} es: \n");
+                Console.WriteLine(new string('-', 192));
+                Console.WriteLine(
+                    "{0,-5} | {1,-15} | {2,-15} | {3,-15} | {4,-20} | {5,-5} | {6,-15} | {7,-20} | {8,-20} | {9,-20} | {10,-15}",
+                    "Id", "FirstName", "LastName", "Username", "Email", "Age", "Type", "Zone", "Sector", "Address",
+                    "Phone");
+                Console.WriteLine(new string('-', 192));
+                Console.WriteLine(
+                    $"{dino.Id,-5} | {dino.FirstName,-15} | {dino.LastName,-15} | {dino.Username,-15} | {dino.Email,-20} | {dino.Age,-5} | {dino.Type,-15} | {dino.Zone,-20} | {dino.Sector,-20} | {dino.Address,-20} | {dino.Phone,-15}");
+                Console.WriteLine(new string('-', 192));
+                Console.WriteLine();
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Ese correo no está registrado en el sistema");
+            }
+        }
     }
 
+    //Buscador universal jejeje
     public Task<List<Dinosaur>> ListDinosuars(string busqueda = null)
     {
         var query = _context.Dinosaurs.AsQueryable();
@@ -213,16 +247,44 @@ public class DinosaurService
         bool isNumber = int.TryParse(busqueda, out int number);
         string term = busqueda.ToLower();
         query = query.Where(d =>
-            (isNumber && (d.Id == number || d.Age == number)) ||
             d.FirstName.ToLower().Contains(term) ||
             d.LastName.ToLower().Contains(term) ||
             d.Username.ToLower().Contains(term) ||
-            d.Email.ToLower().Contains(term) ||
-            (enumType && d.Type == typeEnum) ||
-            (enumZone && d.Zone == zoneEnum) ||
-            (enumSector && d.Sector == sectorEnum)
+            d.Email.ToLower().Contains(term)
         );
         return query.ToListAsync();
+    }
+
+    // Buscador por zona
+    public Task<List<Dinosaur>> GetByZone(DinosaurZone zone)
+    {
+        return _context.Dinosaurs
+            .Where(d => d.Zone == zone)
+            .ToListAsync();
+    }
+
+    // Buscador por sector
+    public Task<List<Dinosaur>> GetBySector(DinosaurSector sector)
+    {
+        return _context.Dinosaurs
+            .Where(d => d.Sector == sector)
+            .ToListAsync();
+    }
+
+    // Busqueda por tipo
+    public Task<List<Dinosaur>> GetByType(DinosaurType type)
+    {
+        return _context.Dinosaurs
+            .Where(d => d.Type == type)
+            .ToListAsync();
+    }
+
+    // Buscador por edad mínima
+    public Task<List<Dinosaur>> GetByMinAge(int edad)
+    {
+        return _context.Dinosaurs
+            .Where(d => d.Age >= edad)
+            .ToListAsync();
     }
 
     public void ViewList(List<Dinosaur> list)
@@ -230,13 +292,17 @@ public class DinosaurService
         if (list.Count > 0)
         {
             Console.WriteLine(
-                "{0,-10} | {1,-10} | {2,-10} | {3,-10} | {4,-15} | {5,-10} | {6,-10} | {7,-10} | {8,-10} | {9,-20} | {10,-15}", "Id", "FirstName", "LastName", "Username", "Email", "Age", "Type", "Zone", "Sector", "Address", "Phone");
-            Console.WriteLine(new string('-', 120));
+                "{0,-5} | {1,-15} | {2,-15} | {3,-20} | {4,-20} | {4,-5}",
+                "Id", "FirstName", "Type", "Zone", "Sector", "Edad");
+            Console.WriteLine(new string('-', 90));
             foreach (var dino in list)
             {
                 Console.WriteLine(
-                    $"{dino.Id,-10} | {dino.FirstName,-10} | {dino.LastName,-10} | {dino.Username,-10} | {dino.Email,-15} | {dino.Type,-10} | {dino.Zone,-10} | {dino.Sector,-10} | {dino.Address,-20} | {dino.Phone,-15}");
+                    $"{dino.Id,-5} | {dino.FirstName,-15} | {dino.Type,-15} | {dino.Zone,-20} | {dino.Zone,-20} | {dino.Age,-5}");
             }
+
+            Console.WriteLine(new string('-', 90));
+            Console.WriteLine();
         }
         else
         {
@@ -331,7 +397,7 @@ public class DinosaurService
         var noAddressDinos = await _context.Dinosaurs
             .Where(x => x.Address == null || x.Address == "")
             .ToListAsync();
-        
+
         Console.WriteLine("All Dinos with no address listed");
         foreach (var dino in noAddressDinos)
         {
@@ -351,7 +417,7 @@ public class DinosaurService
         var lastDinos = await _context.Dinosaurs
             .OrderByDescending(x => x.CreatedAt)
             .ToListAsync();
-        
+
         Console.WriteLine("All Dinos with no address listed");
         foreach (var dino in lastDinos)
         {
@@ -370,7 +436,7 @@ public class DinosaurService
     public async void DinosAlphabetically()
     {
         var dinosAlph = await _context.Dinosaurs.OrderBy(x => x.Type).ToListAsync();
-        
+
         Console.WriteLine("All Dinos with no address listed");
         foreach (var dino in dinosAlph)
         {
